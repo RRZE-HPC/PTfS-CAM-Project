@@ -1,5 +1,7 @@
-CXX ?= g++
-LIKWID ?= off
+CXX=icpx make
+
+LIKWID=on CXX=icpx make
+
 
 FLAGS =
 INCLUDES =-Iinclude
