@@ -29,7 +29,7 @@ endif
 ifeq ($(CXX), g++)
 	FLAGS = -std=c++0x -Wall -Winline -Wshadow -W -O3 -fopenmp -march=native $(LIKWID_FLAG)
 else
-	FLAGS = -std=c++0x -Wall -Winline -Wshadow -W -O3 -qopenmp -xHOST -Wno-tautological-constant-compare $(LIKWID_FLAG)
+	FLAGS = -std=c++0x -Wall -Wshadow -W -O3 -qopenmp -xHOST -Wno-tautological-constant-compare $(LIKWID_FLAG)
 endif
 
 CXXFLAGS = $(FLAGS) $(EXTRA_FLAGS)
