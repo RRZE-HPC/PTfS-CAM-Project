@@ -5,7 +5,7 @@
 # THIS SCRIPT WILL EXECUTE AS FOLLOWS:
 #   ./leaderboard.sh "FIRST" "SECOND"
 #
-#   $FIRST srun --cpu-freq=2000000-2000000:performance $SECOND ./perf y x
+#   $FIRST srun --cpu-freq=2400000-2400000:performance $SECOND ./perf y x
 #
 # WHERE y AND x ARE FIXED AND YOU CAN ONLY GIVE ADDITIONAL PARAMTERS VIA FRIST AND SECOND, WHICH MIGHT INCLUDE
 # THREAD PINNING< NUMA CONTROL OR OMP DIRECTIVES
@@ -21,13 +21,18 @@ if ! [[ $# == 2 ]]; then
     echo ""
     echo "Then, it will be executed:"
     echo ""
-    echo -e "\t FIRST srun -cpu-freq=2000000-2000000:performance SECOND ./perf y x"
+    echo -e "\t FIRST srun --cpu-freq=2400000-2400000:performance SECOND ./perf y x"
     echo ""
     exit 1
 fi
 
 FIRST=$1
 SECOND=$2
+
+if [[ "$SECOND" == *"cpu-freq"* ]]; then
+    echo "Overwriting CPU frequencies is not allowed, let's keep the game fair!"
+    exit
+fi
 
 # Run Tests to verify
 
@@ -40,13 +45,13 @@ fi
 # Run performance for some values
 
 echo "Starting tests..."
-RUN_1=$(env -S $FIRST srun --cpu-freq=2000000-2000000:performance $SECOND ./perf 20000 2000)
+RUN_1=$(env -S "$FIRST" srun --cpu-freq=2400000-2400000:performance $SECOND ./perf 20000 2000)
 echo "Test 1 done."
-RUN_2=$(env -S $FIRST srun --cpu-freq=2000000-2000000:performance $SECOND ./perf 2000 20000)
+RUN_2=$(env -S "$FIRST" srun --cpu-freq=2400000-2400000:performance $SECOND ./perf 2000 20000)
 echo "Test 2 done."
-RUN_3=$(env -S $FIRST srun --cpu-freq=2000000-2000000:performance $SECOND ./perf 1000 400000)
+RUN_3=$(env -S "$FIRST" srun --cpu-freq=2400000-2400000:performance $SECOND ./perf 1000 400000)
 echo "Test 3 done."
-RUN_4=$(env -S $FIRST srun --cpu-freq=2000000-2000000:performance $SECOND ./perf 12345 9876)
+RUN_4=$(env -S "$FIRST" srun --cpu-freq=2400000-2400000:performance $SECOND ./perf 12345 9876)
 echo "Test 4 done."
 
 # Check integrity
